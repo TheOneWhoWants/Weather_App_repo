@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-struct ForecastData: Codable, Identifiable {
+struct ForecastData: Codable, Identifiable, Hashable {
     let id = UUID()
     let data: [DayOfTheWeek]
     let city_name: String
@@ -20,7 +20,7 @@ struct ForecastData: Codable, Identifiable {
     let state_code: String
 }
 
-struct DayOfTheWeek: Codable, Identifiable {
+struct DayOfTheWeek: Codable, Identifiable, Hashable{
     let id = UUID()
     let moonrise_ts: Int
     let wind_cdir: String
@@ -62,7 +62,7 @@ struct DayOfTheWeek: Codable, Identifiable {
     let clouds_low: Int
 }
 
-struct WeatherInfo: Codable {
+struct WeatherInfo: Codable, Hashable {
     let icon: String
     let code: Int
     let description: String
