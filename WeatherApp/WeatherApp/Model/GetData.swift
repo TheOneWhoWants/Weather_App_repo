@@ -15,8 +15,8 @@ class FetchData {
     var latitude: Double?
     var longtitude: Double?
     var city: String?
-    
-    func getJSON(completed: @escaping (ForecastData) -> ()) {
+
+    func getJSON(completed: @escaping (ForecastData?, ForecastDataFromCity?) -> ()) {
         var address: String
         
         if let latitude = latitude {
@@ -30,11 +30,25 @@ class FetchData {
             if error == nil {
                 print(url)
                 let decoder = JSONDecoder()
-                let posts = try! decoder.decode(ForecastData.self, from: data!)
-                DispatchQueue.main.async {
-                    completed(posts)
+                if self.city != nil {
+                    do {
+                        let posts = try decoder.decode(ForecastDataFromCity.self, from: data!)
+                        DispatchQueue.main.async {
+                            completed(nil, posts)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    do {
+                        let posts = try decoder.decode(ForecastData.self, from: data!)
+                        DispatchQueue.main.async {
+                            completed(posts, nil)
+                        }
+                    } catch {
+                        print(error)
+                    }
                 }
-                
             }
         }.resume()
     }

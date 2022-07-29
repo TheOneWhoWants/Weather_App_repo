@@ -13,9 +13,20 @@ struct ForecastData: Codable, Identifiable, Hashable {
     let id = UUID()
     let data: [DayOfTheWeek]
     let city_name: String
-    let lon: Double
+    let lon: Double?
     let timezone: String
-    let lat: Double
+    let lat: Double?
+    let country_code: String
+    let state_code: String
+}
+
+struct ForecastDataFromCity: Codable, Identifiable, Hashable {
+    let id = UUID()
+    let data: [DayOfTheWeek]
+    let city_name: String
+    let lon: String
+    let timezone: String
+    let lat: String
     let country_code: String
     let state_code: String
 }
@@ -68,3 +79,25 @@ struct WeatherInfo: Codable, Hashable {
     let description: String
 }
 
+//@propertyWrapper
+//struct PreferredDouble {
+//    private var value: Double
+//
+//    var wrappedValue: Double {
+//        get {value }
+//        set { value = newValue }
+//    }
+//}
+//
+//extension PreferredDouble: Decodable {
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.singleValueContainer()
+//        if let double = try? container.decode(Double.self) {
+//            value = double
+//        } else if let string = try? container.decode(String.self), let double = Double(string) {
+//            value = double
+//        } else {
+//            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot convert to Double")
+//        }
+//    }
+//}

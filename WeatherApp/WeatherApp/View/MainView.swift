@@ -8,14 +8,17 @@
 import SwiftUI
 import CoreLocation
 
-struct ContentView: View {
+struct MainView: View {
     init() {
         UITableView.appearance().backgroundColor = .clear
     }
     
     @Namespace private var namespace
+    @State private var showingSheet = false
     @ObservedObject private var currentLocation = LocationManager()
     @State private var json: ForecastData?
+    @State var chosenCity: String?
+    @State private var jsonFromCity: ForecastDataFromCity?
     @State private var currentWeather: DayOfTheWeek?
     @State private var jsonData: [DayOfTheWeek] = []
     
@@ -51,7 +54,7 @@ struct ContentView: View {
                     Section {
                         VStack{
                             VStack{
-                                Text(json?.city_name ?? "Unknown city")
+                                Text(json?.city_name ?? jsonFromCity?.city_name ?? "Unknown city")
                                     .frame(width: 300, height: 40)
                                     .font(.system(size: 35, weight: .medium, design: .default))
                                     .foregroundColor(Color.white)
@@ -138,16 +141,23 @@ struct ContentView: View {
                         
                     }
                 }.onAppear {
-                    FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in
-                        self.jsonData = json.data
-                        self.jsonData.removeFirst()
+                    if chosenCity == nil {
+                        FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json, jsonString in
+                            self.jsonData = json!.data
+                            self.jsonData.removeFirst()
+                        }
+                    } else {
+                        FetchData(city: chosenCity!, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json, jsonString in
+                            self.jsonFromCity = jsonString
+                            self.currentWeather = self.jsonFromCity!.data[0]
+                        }
                     }
+                    print("FIRST APPEAR")
+
                 }
                 
                 Button {
-                    NavigationLink(destination: Text("Choose city")) {
-                        
-                    }
+                    showingSheet.toggle()
                 } label: {
                     Text("CHANGE MY LOCATION")
                         .frame(width: 300, height: 40)
@@ -157,21 +167,40 @@ struct ContentView: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: 18)
                                 .stroke(.blue, lineWidth: 1))
+                }.sheet(isPresented: $showingSheet) {
+                    ChooseCity { city in
+                        self.chosenCity = city
+                        FetchData(city: chosenCity!, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json, jsonString in
+                            self.jsonFromCity = jsonString
+                            self.currentWeather = self.jsonFromCity!.data[0]
+                            
+                        }
+                    }
+
                 }
                 .padding(.bottom, 20.0)
             }.onAppear {
-                FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in
-                    self.json = json
-                    self.currentWeather = json.data[0]
+                if chosenCity == nil {
+                    FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json, _  in
+                        self.json = json
+                        self.currentWeather = self.json?.data[0]
+                    }
+                } else {
+                    FetchData(city: chosenCity!, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { _, jsonString in
+                        self.jsonFromCity = jsonString
+                        self.currentWeather = self.jsonFromCity!.data[0]
+                    }
                 }
+                
+                print("SECOND APPEAR")
             }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct MainnView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainView()
     }
 }
 
