@@ -10,7 +10,6 @@ import SwiftUI
 class FetchData {
     
     var locationManager = LocationManager()
-    
     var apiKey: String
     var latitude: Double?
     var longtitude: Double?
@@ -51,5 +50,4 @@ class FetchData {
         self.city = city
         self.apiKey = apiKey
     }
-    
 }

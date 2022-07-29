@@ -90,7 +90,6 @@ struct MainView: View {
                                             Text("\(oneDayForecast.pop)%")
                                                 .font(.system(size: 12, weight: .medium, design: .default))
                                                 .foregroundColor(.blue)
-                                            
                                         }
                                     }.padding(.trailing, 0)
                                 }
@@ -109,12 +108,10 @@ struct MainView: View {
                                 .frame(width: 60, alignment: .leading)
                                 .padding(.trailing, 0)
                             Spacer()
-                            
                         }.listRowBackground(
                             Color.cyan.opacity(0.5)
                         )
                         .listRowBackground(Color.clear)
-                        
                     }
                 }.onAppear {
                     FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in

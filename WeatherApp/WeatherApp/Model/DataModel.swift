@@ -5,8 +5,6 @@
 //  Created by Matthew  on 17.07.2022.
 //
 
-//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
-
 import SwiftUI
 
 struct ForecastData: Codable, Identifiable, Hashable {
