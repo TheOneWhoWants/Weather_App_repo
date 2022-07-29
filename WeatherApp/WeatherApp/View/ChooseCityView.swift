@@ -13,7 +13,6 @@ struct ChooseCity: View {
         self.sendCity = sendCity
     }
     
-    
     @Environment(\.dismiss) var dismiss
     @State private var cityName: String = ""
     let sendCity: ((String) -> Void)

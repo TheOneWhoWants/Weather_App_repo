@@ -13,22 +13,38 @@ struct ForecastData: Codable, Identifiable, Hashable {
     let id = UUID()
     let data: [DayOfTheWeek]
     let city_name: String
-    let lon: Double?
+    let lon: String?
     let timezone: String
-    let lat: Double?
+    var lat: String?
     let country_code: String
     let state_code: String
-}
-
-struct ForecastDataFromCity: Codable, Identifiable, Hashable {
-    let id = UUID()
-    let data: [DayOfTheWeek]
-    let city_name: String
-    let lon: String
-    let timezone: String
-    let lat: String
-    let country_code: String
-    let state_code: String
+    
+    init(lon: String? = nil, lat: String? = nil, data: [DayOfTheWeek], city_name: String, timezone: String, country_code: String, state_code: String) {
+        self.lon = lon
+        self.lat = lat
+        self.data = data
+        self.city_name = city_name
+        self.timezone = timezone
+        self.country_code = country_code
+        self.state_code = state_code
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        data = try container.decode([DayOfTheWeek].self, forKey: .data)
+        city_name = try container.decode(String.self, forKey: .city_name)
+        timezone = try container.decode(String.self, forKey: .timezone)
+        country_code = try container.decode(String.self, forKey: .country_code)
+        state_code = try container.decode(String.self, forKey: .state_code)
+        do {
+            lat = try String(container.decode(Double.self, forKey: .lat))
+            lon = try String(container.decode(Double.self, forKey: .lon))
+        } catch {
+            lat = try container.decode(String.self, forKey: .lat)
+            lon = try container.decode(String.self, forKey: .lon)
+        }
+    }
+    
 }
 
 struct DayOfTheWeek: Codable, Identifiable, Hashable{

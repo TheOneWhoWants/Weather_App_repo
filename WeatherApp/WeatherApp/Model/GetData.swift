@@ -16,7 +16,7 @@ class FetchData {
     var longtitude: Double?
     var city: String?
 
-    func getJSON(completed: @escaping (ForecastData?, ForecastDataFromCity?) -> ()) {
+    func getJSON(completed: @escaping (ForecastData) -> ()) {
         var address: String
         
         if let latitude = latitude {
@@ -28,26 +28,14 @@ class FetchData {
         guard let url = URL(string: "https://api.weatherbit.io/v2.0/forecast/daily?\(address)&key=\(apiKey)") else { return }
         URLSession.shared.dataTask(with: url) { data, response, error in
             if error == nil {
-                print(url)
                 let decoder = JSONDecoder()
-                if self.city != nil {
-                    do {
-                        let posts = try decoder.decode(ForecastDataFromCity.self, from: data!)
-                        DispatchQueue.main.async {
-                            completed(nil, posts)
-                        }
-                    } catch {
-                        print(error)
+                do {
+                    let posts = try decoder.decode(ForecastData.self, from: data!)
+                    DispatchQueue.main.async {
+                        completed(posts)
                     }
-                } else {
-                    do {
-                        let posts = try decoder.decode(ForecastData.self, from: data!)
-                        DispatchQueue.main.async {
-                            completed(posts, nil)
-                        }
-                    } catch {
-                        print(error)
-                    }
+                } catch {
+                    print("\(error) ERROR \(error.localizedDescription)")
                 }
             }
         }.resume()
