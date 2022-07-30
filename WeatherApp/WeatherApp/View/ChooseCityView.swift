@@ -30,7 +30,7 @@ struct ChooseCity: View {
                 }.padding()
                 
                 VStack {
-                    TextField("What city do you whant to find?", text: $cityName) {
+                    TextField("What city do you want to find?", text: $cityName) {
                         
                     }.padding()
                         .frame(height: 40)

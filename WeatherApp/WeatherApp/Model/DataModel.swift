@@ -17,6 +17,7 @@ struct ForecastData: Codable, Identifiable, Hashable {
     let country_code: String
     let state_code: String
     
+    //Depending on the request, the response from the server for lat and lon can come either as a Double or as a String
     init(lon: String? = nil, lat: String? = nil, data: [DayOfTheWeek], city_name: String, timezone: String, country_code: String, state_code: String) {
         self.lon = lon
         self.lat = lat
