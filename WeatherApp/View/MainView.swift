@@ -28,18 +28,18 @@ struct MainView: View {
             VStack {
                 List {
                     Section {
-                        VStack{
-                            VStack{
-                                Text(json?.city_name ?? "Unknown city")
+                        VStack {
+                            VStack {
+                                Text(cityName)
                                     .frame(width: 300, height: 40)
                                     .font(.system(size: 35, weight: .medium, design: .default))
                                     .foregroundColor(Color.white)
-                                VStack(spacing: 1){
-                                    VStack{
+                                VStack(spacing: 1) {
+                                    VStack {
                                         Image(systemName: currentWeather?.weather.icon.nameToImage()! ?? "")
                                             .renderingMode(.original)
                                             .resizable()
-                                            .aspectRatio                (contentMode: .fill)
+                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 50, height: 70, alignment: .center)
                                         if currentWeather?.pop ?? 0 > 0 {
                                             Text("\(currentWeather!.pop)%")
@@ -51,7 +51,7 @@ struct MainView: View {
                                         .font(.system(size: 25, weight: .medium, design: .default))
                                         .foregroundColor(.white)
                                         .padding()
-                                    HStack(alignment: .top){
+                                    HStack(alignment: .top) {
                                         Spacer()
                                         Text("Min: \(Int(currentWeather?.low_temp ?? 0))°")
                                             .font(.system(size: 20, weight: .medium, design: .default))
@@ -70,21 +70,21 @@ struct MainView: View {
                     }.listRowBackground(Color.clear)
                     
                     ForEach(jsonData) { oneDayForecast in
-                        HStack{
-                            HStack{
+                        HStack {
+                            HStack {
                                 Text(oneDayForecast.datetime.getDayOfWeek(format: "yyyy-MM-dd")!)
                                     .frame(width: 50, alignment: .leading)
                                     .font(.system(size: 20, weight: .medium, design: .default))
                                     .foregroundColor(.white)
                                     .padding()
                                 Spacer()
-                                HStack{
+                                HStack {
                                     
-                                    VStack{
+                                    VStack {
                                         Image(systemName: oneDayForecast.weather.icon.nameToImage()!)
                                             .renderingMode(.original)
                                             .resizable()
-                                            .aspectRatio                (contentMode: .fill)
+                                            .aspectRatio(contentMode: .fill)
                                             .frame(width: 10, height: 20, alignment: .top)
                                         if oneDayForecast.pop > 0 {
                                             Text("\(oneDayForecast.pop)%")
@@ -150,10 +150,23 @@ struct MainView: View {
                     self.currentWeather = self.json?.data[0]
                 }
             }
+        }.refreshable {
+            FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in
+                self.json = json
+                self.currentWeather = self.json?.data[0]
+            }
         }
     }
     
-    fileprivate func getDayOfWeek(_ date:String, format: String) -> String? {
+    var cityName: String {
+        guard let json = json else {
+            return "UNKNOWN"
+        }
+        let textValue = "\(json.city_name) \(json.country_code)"
+        return textValue
+    }
+    
+    fileprivate func getDayOfWeek(_ date: String, format: String) -> String? {
         
         let weekDays = [
             "Sunday",
@@ -182,6 +195,3 @@ struct MainnView_Previews: PreviewProvider {
         MainView()
     }
 }
-
-
-

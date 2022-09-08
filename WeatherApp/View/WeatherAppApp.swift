@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//it seems like this issue is a bug
+// it seems like this issue is a bug and probably you won't see it
 @main
 struct WeatherAppApp: App {
     var body: some Scene {

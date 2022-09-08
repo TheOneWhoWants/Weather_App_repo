@@ -17,7 +17,7 @@ struct ForecastData: Codable, Identifiable, Hashable {
     let country_code: String
     let state_code: String
     
-    //Depending on the request, the response from the server for lat and lon can come either as a Double or as a String
+    // Depending on the request, the response from the server for lat and lon can come either as a Double or as a String
     init(lon: String? = nil, lat: String? = nil, data: [DayOfTheWeek], city_name: String, timezone: String, country_code: String, state_code: String) {
         self.lon = lon
         self.lat = lat
@@ -46,7 +46,7 @@ struct ForecastData: Codable, Identifiable, Hashable {
     
 }
 
-struct DayOfTheWeek: Codable, Identifiable, Hashable{
+struct DayOfTheWeek: Codable, Identifiable, Hashable {
     let id = UUID()
     let moonrise_ts: Int
     let wind_cdir: String
@@ -94,25 +94,25 @@ struct WeatherInfo: Codable, Hashable {
     let description: String
 }
 
-//@propertyWrapper
-//struct PreferredDouble {
-//    private var value: Double
+// @propertyWrapper
+// struct PreferredDouble {
+//     private var value: Double
 //
-//    var wrappedValue: Double {
-//        get {value }
-//        set { value = newValue }
-//    }
-//}
+//     var wrappedValue: Double {
+//         get {value }
+//         set { value = newValue }
+//     }
+// }
 //
-//extension PreferredDouble: Decodable {
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.singleValueContainer()
-//        if let double = try? container.decode(Double.self) {
-//            value = double
-//        } else if let string = try? container.decode(String.self), let double = Double(string) {
-//            value = double
-//        } else {
-//            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot convert to Double")
-//        }
-//    }
-//}
+// extension PreferredDouble: Decodable {
+//     init(from decoder: Decoder) throws {
+//         let container = try decoder.singleValueContainer()
+//         if let double = try? container.decode(Double.self) {
+//             value = double
+//         } else if let string = try? container.decode(String.self), let double = Double(string) {
+//             value = double
+//         } else {
+//             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot convert to Double")
+//         }
+//     }
+// }

@@ -14,7 +14,7 @@ class FetchData {
     var longtitude: Double?
     var city: String?
 
-    func getJSON(completed: @escaping (ForecastData) -> ()) {
+    func getJSON(completed: @escaping (ForecastData) -> Void) {
         var address: String
         
         if let latitude = latitude {
@@ -24,7 +24,7 @@ class FetchData {
         }
         
         guard let url = URL(string: "https://api.weatherbit.io/v2.0/forecast/daily?\(address)&key=\(apiKey)") else { return }
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             if error == nil {
                 let decoder = JSONDecoder()
                 do {

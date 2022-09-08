@@ -20,7 +20,7 @@ struct ChooseCity: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack{
+                HStack {
                     Spacer()
                     Button {
                         dismiss()
@@ -48,6 +48,7 @@ struct ChooseCity: View {
                     Spacer()
                     Button {
                         sendCity(cityName)
+                        
                         dismiss()
                     } label: {
                         Text("FIND")
@@ -60,6 +61,6 @@ struct ChooseCity: View {
 
 struct ChooseCity_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseCity { city in }
+        ChooseCity { _ in }
     }
 }

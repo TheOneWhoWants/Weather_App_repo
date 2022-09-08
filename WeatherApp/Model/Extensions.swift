@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//From common date format to the day of the week
+// From common date format to the day of the week
 extension String {
     func getDayOfWeek(format: String) -> String? {
         
@@ -32,7 +32,7 @@ extension String {
     }
 }
 
-//From JSON icon name to SwiftUI system icon name
+// From JSON icon name to SwiftUI system icon name
 extension String {
     func nameToImage() -> String? {
         let images: [String: String] = [
