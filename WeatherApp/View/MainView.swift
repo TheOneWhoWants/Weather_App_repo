@@ -114,7 +114,9 @@ struct MainView: View {
                         .listRowBackground(Color.clear)
                     }
                 }.onAppear {
-                    FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796, longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382, apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in
+                    FetchData(latitude: currentLocation.lastLocation?.coordinate.latitude ?? 35.7796,
+                              longtitude: currentLocation.lastLocation?.coordinate.longitude ?? -78.6382,
+                              apiKey: "f8de3575158a471ebe59ab2e62ba8d2d").getJSON { json in
                         self.jsonData = json.data
                         self.jsonData.removeFirst()
                     }
